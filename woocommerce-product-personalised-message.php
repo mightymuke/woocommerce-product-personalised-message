@@ -34,8 +34,7 @@ class WC_Product_Personalised_Message {
 	 * @return void
 	 */
 	public function __construct() {
-
-		$default_message = '<p class="personalised-message" style="clear:both; padding-top: .5em;"><label>'.__( "Personalise your product for", "woocommerce-product-personalised-message" ).' {price}</label>{textarea}</p>';
+		$default_message = sprintf( __( "Add a personalised message to your item for %s?", "woocommerce-product-personalised-message" ), '{price}' ) . ' {textarea}';
 
 		$this->personalised_message_enabled = get_option( 'product_personalised_message_enabled' ) == 'yes' ? true : false;
 		$this->personalised_message_cost    = get_option( 'product_personalised_message_cost', 0 );
@@ -47,12 +46,12 @@ class WC_Product_Personalised_Message {
 
 		add_option( 'product_personalised_message_enabled', 'no' );
 		add_option( 'product_personalised_message_cost', '0' );
-		add_option( 'product_personalised_message_label', '' );
+		add_option( 'product_personalised_message_label', $default_message );
 
 		// Init settings
 		$this->settings = array(
 			array(
-				'name'     => __( 'Default Personalised Message Status', 'woocommerce-product-personalised-message' ),
+				'name'     => __( 'Personalised Messages Enabled by Default?', 'woocommerce-product-personalised-message' ),
 				'desc'     => __( 'Enable this to allow personalised messages by default.', 'woocommerce-product-personalised-message' ),
 				'id'       => 'product_personalised_message_enabled',
 				'type'     => 'checkbox',
@@ -66,8 +65,8 @@ class WC_Product_Personalised_Message {
 			),
 			array(
 				'name'     => __( 'Personalised Message Label', 'woocommerce-product-personalised-message' ),
-				'desc'     => __( 'Default', 'woocommerce-product-personalised-message' ) . ': ' . htmlspecialchars( $default_message ),
 				'id'       => 'product_personalised_message_label',
+				'desc' 		=> __( 'Note: <code>{textarea}</code> will be replaced with a textarea and <code>{price}</code> will be replaced with the personalised message cost.', 'woocommerce-product-personalised-message' ),
 				'type'     => 'text',
 				'desc_tip' => __( 'The label shown to the user on the frontend.', 'woocommerce-product-personalised-message' )
 			)
@@ -103,8 +102,9 @@ class WC_Product_Personalised_Message {
 
 		$is_personalisable = get_post_meta( $post->ID, '_is_personalisable', true );
 
-		if ( $is_personalisable == '' && $this->personalised_message_enabled )
+		if ( $is_personalisable == '' && $this->personalised_message_enabled ) {
 			$is_personalisable = 'yes';
+		}
 
 		if ( $is_personalisable == 'yes' ) {
 
@@ -112,13 +112,18 @@ class WC_Product_Personalised_Message {
 
 			$cost = get_post_meta( $post->ID, '_personalised_message_cost', true );
 
-			if ( $cost == '' )
+			if ( $cost == '' ) {
 				$cost = $this->personalised_message_cost;
+			}
 
 			$price_text    = $cost > 0 ? woocommerce_price( $cost ) : __( 'free', 'woocommerce-product-personalised-message' );
 			$textarea      = '<textarea name="personalised_message"></textarea>';
 
-			echo str_replace( array( '{textarea}', '{price}' ), array( $textarea, $price_text ), $this->personalised_message_label );
+			woocommerce_get_template( 'personalised-message.php', array(
+				'personalised_message_label' => $this->personalised_message_label,
+				'textarea'                   => $textarea,
+				'price_text'                 => $price_text
+			), 'woocommerce-product-personalised-message', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/' );
 		}
 	}
 
@@ -131,12 +136,11 @@ class WC_Product_Personalised_Message {
 	 * @return void
 	 */
 	public function add_cart_item_data( $cart_item_meta, $product_id ) {
-		global $woocommerce;
-
 		$is_personalisable = get_post_meta( $product_id, '_is_personalisable', true );
 
-		if ( $is_personalisable == '' && $this->personalised_message_enabled )
+		if ( $is_personalisable == '' && $this->personalised_message_enabled ) {
 			$is_personalisable = 'yes';
+		}
 
 		if ( ! empty( $_POST['personalised_message'] ) && $is_personalisable == 'yes' ) {
 			$cart_item_meta['personalised_message_exists'] = true;
@@ -161,8 +165,9 @@ class WC_Product_Personalised_Message {
 
 			$cost = get_post_meta( $cart_item['data']->id, '_personalised_message_cost', true );
 
-			if ( $cost == '' )
+			if ( $cost == '' ) {
 				$cost = $this->personalised_message_cost;
+			}
 
 			$cart_item['data']->adjust_price( $cost );
 		}
@@ -179,7 +184,6 @@ class WC_Product_Personalised_Message {
 	 * @return void
 	 */
 	public function get_item_data( $item_data, $cart_item ) {
-
 		if ( ! empty( $cart_item['personalised_message'] ) )
 			$item_data[] = array(
 				'name'    => __( 'Personalised Message', 'woocommerce-product-personalised-message' ),
@@ -202,8 +206,9 @@ class WC_Product_Personalised_Message {
 
 			$cost = get_post_meta( $cart_item['data']->id, '_personalised_message_cost', true );
 
-			if ( $cost == '' )
+			if ( $cost == '' ) {
 				$cost = $this->personalised_message_cost;
+			}
 
 			$cart_item['data']->adjust_price( $cost );
 		}
@@ -220,8 +225,9 @@ class WC_Product_Personalised_Message {
 	 * @return void
 	 */
 	public function add_order_item_meta( $item_id, $cart_item ) {
-		if ( ! empty( $cart_item['personalised_message'] ) )
+		if ( ! empty( $cart_item['personalised_message'] ) ) {
 			woocommerce_add_order_item_meta( $item_id, __( 'Personalised Message', 'woocommerce-product-personalised-message' ), __( $cart_item['personalised_message'], 'woocommerce-product-personalised-message' ) );
+		}
 	}
 
 	/**
@@ -231,14 +237,15 @@ class WC_Product_Personalised_Message {
 	 * @return void
 	 */
 	public function write_panel() {
-		global $post, $woocommerce;
+		global $post;
 
 		echo '</div><div class="options_group show_if_simple show_if_variable">';
 
 		$is_personalisable = get_post_meta( $post->ID, '_is_personalisable', true );
 
-		if ( $is_personalisable == '' && $this->personalised_message_enabled )
+		if ( $is_personalisable == '' && $this->personalised_message_enabled ) {
 			$is_personalisable = 'yes';
+		}
 
 		woocommerce_wp_checkbox( array(
 				'id'            => '_is_personalisable',
@@ -256,7 +263,7 @@ class WC_Product_Personalised_Message {
 				'description' => __( 'Override the default cost by inputting a cost here.', 'woocommerce-product-personalised-message' ),
 			) );
 
-		$woocommerce->add_inline_js( "
+		wc_enqueue_js( "
 			jQuery('input#_is_personalisable').change(function(){
 
 				jQuery('._personalised_message_cost_field').hide();
