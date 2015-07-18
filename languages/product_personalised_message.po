@@ -1,0 +1,91 @@
+# This file is distributed under the same license as the WooCommerce Product Personalised Message package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2014-09-21 20:40:35+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/0.1\n"
+"Project-Id-Version: WooCommerce Product Personalised Message\n"
+
+#: woocommerce-product-personalised-message.php:53
+msgid "Default Personalised Message Status"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:54
+msgid "Enable this to allow personalised messages by default."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:59
+msgid "Default Personalised Message Cost"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:60
+msgid "The cost of personalised messages unless overridden per-product."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:66
+msgid "Personalised Message Label"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:67
+msgid "Default"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:70
+msgid "The label shown to the user on the frontend."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:110
+msgid "free"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:175 woocommerce-product-personalised-message.php:214
+msgid "Personalised Message"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:176 woocommerce-product-personalised-message.php:177
+#: woocommerce-product-personalised-message.php:214
+msgid "Yes"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:237
+msgid "Personalisable"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:238
+msgid "Enable this option if the customer can choose personalised messages."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:243
+msgid "Personalised Message Cost"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:246
+msgid "Override the default cost by inputing a cost here."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "WooCommerce Product Personalised Message"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "https://github.com/mightymuke/woocommerce-product-personalised-message"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "Add an option to your products to enable personalised messages. Optionally charge a fee. For WooCommerce 2.0+ @todo Design selection."
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "Marcus Bristol"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "http://rededge.co.nz"
+msgstr ""
+
+#: woocommerce-product-personalised-message.php:0
+msgid "1.0.0"
+msgstr ""
