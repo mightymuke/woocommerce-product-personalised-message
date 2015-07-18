@@ -2,8 +2,8 @@
 /*
 Plugin Name: WooCommerce Product Personalised Message
 Plugin URI: https://github.com/mightymuke/woocommerce-product-personalised-message
-Description: Add an option to your products to enable personalised messages. Optionally charge a fee. For WooCommerce 2.0+ @todo Design selection.
-Version: 1.0.1
+Description: Add an option to your products to enable personalised messages. Optionally charge a fee.
+Version: 1.1.0
 Author: Marcus Bristol
 Author URI: http://rededge.co.nz
 Requires at least: 3.5
@@ -11,7 +11,8 @@ Tested up to: 3.5
 Text Domain: product_personalised_message
 Domain Path: /languages/
 
-	Copyright: © 2013 Marcus Bristol.
+	Copyright: © 2015 Marcus Bristol.
+	Copied from plugin: WooCommerce Product Gift Wrap (https://github.com/mikejolley/woocommerce-product-gift-wrap)
 	License: GNU General Public License v3.0
 	License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -34,7 +35,7 @@ class WC_Product_Personalised_Message {
 	 */
 	public function __construct() {
 
-		$default_message = '<p class="personalised-message" style="clear:both; padding-top: .5em;"><label>Personalise your product for {price}</label>{textarea}</p>';
+		$default_message = '<p class="personalised-message" style="clear:both; padding-top: .5em;"><label>'.__( "Personalise your product for", "product_personalised_message" ).' {price}</label>{textarea}</p>';
 
 		$this->personalised_message_enabled = get_option( 'product_personalised_message_enabled' ) == 'yes' ? true : false;
 		$this->personalised_message_cost    = get_option( 'product_personalised_message_cost', 0 );
@@ -104,28 +105,19 @@ class WC_Product_Personalised_Message {
 		if ( $is_personalisable == '' && $this->personalised_message_enabled )
 			$is_personalisable = 'yes';
 
-		echo '<!-- mgb - $is_personalisable: ' . $is_personalisable . '; $this->personalised_message_enabled: ' . $this->personalised_message_enabled . '; -->';
 		if ( $is_personalisable == 'yes' ) {
 
 			$current_value = ! empty( $_REQUEST['personalised_message'] ) ? $_REQUEST['personalised_message'] : '';
 
 			$cost = get_post_meta( $post->ID, '_personalised_message_cost', true );
 
-			echo '<!-- mgb - $current_value: ' . $current_value . '; $cost: ' . $cost . '; -->';
-
 			if ( $cost == '' )
 				$cost = $this->personalised_message_cost;
 
-			echo '<!-- mgb - $current_value: ' . $current_value . '; $cost: ' . $cost . '; -->';
 			$price_text    = $cost > 0 ? woocommerce_price( $cost ) : __( 'free', 'product_personalised_message' );
-			//mgb $checkbox      = '<input type="checkbox" name="gift_wrap" value="yes" ' . checked( $current_value, 1, false ).' />';
 			$textarea      = '<textarea name="personalised_message"></textarea>';
-			echo '<!-- mgb - $price_text: ' . $price_text . '; -->';
 
-			$blah = str_replace( array( '{textarea}', '{price}' ), array( $textarea, $price_text ), $this->personalised_message_label );
-			//$blah = str_replace( array( '{textarea}', '{price}' ), array( $textarea, $price_text ) );
-			echo '<!-- mgb - $this->personalised_message_label: ' . $this->personalised_message_label . '; -->';
-			echo $blah;
+			echo str_replace( array( '{textarea}', '{price}' ), array( $textarea, $price_text ), $this->personalised_message_label );
 		}
 	}
 
@@ -260,7 +252,7 @@ class WC_Product_Personalised_Message {
 				'label'       => __( 'Personalised Message Cost', 'product_personalised_message' ),
 				'placeholder' => $this->personalised_message_cost,
 				'desc_tip'    => true,
-				'description' => __( 'Override the default cost by inputing a cost here.', 'product_personalised_message' ),
+				'description' => __( 'Override the default cost by inputting a cost here.', 'product_personalised_message' ),
 			) );
 
 		$woocommerce->add_inline_js( "
