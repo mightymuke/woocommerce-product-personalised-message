@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Product Personalised Message
 Plugin URI: https://github.com/mightymuke/woocommerce-product-personalised-message
 Description: Add an option to your products to enable personalised messages. Optionally charge a fee. For WooCommerce 2.0+ @todo Design selection.
-Version: 1.0.0
+Version: 1.0.1
 Author: Marcus Bristol
 Author URI: http://rededge.co.nz
 Requires at least: 3.5
@@ -68,7 +68,7 @@ class WC_Product_Personalised_Message {
 				'id'       => 'product_personalised_message_label',
 				'type'     => 'text',
 				'desc_tip' => __( 'The label shown to the user on the frontend.', 'product_personalised_message' )
-			),
+			)
 		);
 
 		// Display on the front end
@@ -130,7 +130,7 @@ class WC_Product_Personalised_Message {
 	}
 
 	/**
-	 * When added to cart, save any gift data
+	 * When added to cart, save any personalised message
 	 *
 	 * @access public
 	 * @param mixed $cart_item_meta
@@ -145,8 +145,10 @@ class WC_Product_Personalised_Message {
 		if ( $is_personalisable == '' && $this->personalised_message_enabled )
 			$is_personalisable = 'yes';
 
-		if ( ! empty( $_POST['personalised_message'] ) && $is_personalisable == 'yes' )
-			$cart_item_meta['personalised_message'] = true;
+		if ( ! empty( $_POST['personalised_message'] ) && $is_personalisable == 'yes' ) {
+			$cart_item_meta['personalised_message_exists'] = true;
+			$cart_item_meta['personalised_message'] = $_POST['personalised_message'];
+		}
 
 		return $cart_item_meta;
 	}
@@ -162,7 +164,7 @@ class WC_Product_Personalised_Message {
 	public function get_cart_item_from_session( $cart_item, $values ) {
 
 		if ( ! empty( $values['personalised_message'] ) ) {
-			$cart_item['personalised_message'] = true;
+			$cart_item['personalised_message'] = $values['personalised_message'];
 
 			$cost = get_post_meta( $cart_item['data']->id, '_personalised_message_cost', true );
 
@@ -188,8 +190,8 @@ class WC_Product_Personalised_Message {
 		if ( ! empty( $cart_item['personalised_message'] ) )
 			$item_data[] = array(
 				'name'    => __( 'Personalised Message', 'product_personalised_message' ),
-				'value'   => __( 'Yes', 'product_personalised_message' ),
-				'display' => __( 'Yes', 'product_personalised_message' )
+				'value'   => __( 'personalised_message', 'product_personalised_message' ),
+				'display' => $cart_item['personalised_message']
 			);
 
 		return $item_data;
@@ -226,7 +228,7 @@ class WC_Product_Personalised_Message {
 	 */
 	public function add_order_item_meta( $item_id, $cart_item ) {
 		if ( ! empty( $cart_item['personalised_message'] ) )
-			woocommerce_add_order_item_meta( $item_id, __( 'Personalised Message', 'product_personalised_message' ), __( 'Yes', 'product_personalised_message' ) );
+			woocommerce_add_order_item_meta( $item_id, __( 'Personalised Message', 'product_personalised_message' ), __( $cart_item['personalised_message'], 'product_personalised_message' ) );
 	}
 
 	/**
