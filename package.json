@@ -13,6 +13,7 @@
   "license": "GPL",
   "devDependencies": {
     "grunt": "~0.4.2",
+    "grunt-checktextdomain": "^1.0.0",
     "grunt-newer": "^1.1.1",
     "grunt-po2mo": "^0.1.2",
     "grunt-pot": "^0.2.1",

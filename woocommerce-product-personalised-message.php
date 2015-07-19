@@ -11,7 +11,7 @@ Tested up to: 4.0
 Text Domain: woocommerce-product-personalised-message
 Domain Path: /languages/
 
-	Copyright: © 2015 Marcus Bristol.
+	Copyright: ï¿½ 2015 Marcus Bristol.
 	Copied from plugin: WooCommerce Product Gift Wrap (https://github.com/mikejolley/woocommerce-product-gift-wrap)
 	License: GNU General Public License v3.0
 	License URI: http://www.gnu.org/licenses/gpl-3.0.html
