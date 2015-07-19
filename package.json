@@ -1,0 +1,25 @@
+{
+  "name": "woocommerce-product-personalised-message",
+  "title": "WooCommerce Product Personalised Message",
+  "version": "1.1.0",
+  "description": "Personalised message support for WooCommerce",
+  "homepage": "http://wordpress.org/plugins/woocommerce-product-personalised-message/",
+  "main": "Gruntfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mightymuke/woocommerce-product-personalised-message.git"
+  },
+  "author": "Marcus Bristol",
+  "license": "GPL",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-newer": "^1.1.1",
+    "grunt-po2mo": "^0.1.2",
+    "grunt-pot": "^0.2.1",
+    "load-grunt-tasks": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.1.0"
+  }
+}
